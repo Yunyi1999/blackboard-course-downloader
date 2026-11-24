@@ -1,0 +1,8 @@
+{
+  "name": {
+    "message": "Blackboard 教材下載器（非官方）"
+  },
+  "desc": {
+    "message": "掃描 Blackboard 課程，批次下載你有權存取的檔案到任意資料夾，並保留目錄結構。非官方擴充功能。"
+  }
+}

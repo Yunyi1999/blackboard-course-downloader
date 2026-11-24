@@ -1,0 +1,8 @@
+{
+  "name": {
+    "message": "Course File Downloader for Blackboard"
+  },
+  "desc": {
+    "message": "Scan a Blackboard course and batch download the files you can access to any folder, keeping the structure. Unofficial."
+  }
+}

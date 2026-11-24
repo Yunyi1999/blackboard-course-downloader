@@ -1,0 +1,8 @@
+{
+  "name": {
+    "message": "Blackboard 课件下载器（非官方）"
+  },
+  "desc": {
+    "message": "扫描 Blackboard 课程，批量下载你有权访问的文件到任意文件夹，保留目录结构。非官方扩展。"
+  }
+}

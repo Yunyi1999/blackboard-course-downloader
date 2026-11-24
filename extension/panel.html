@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Course File Downloader</title>
+<link rel="stylesheet" href="panel.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <img src="icons/icon32.png" alt="" width="20" height="20">
+    <span data-i18n="appName"></span>
+  </div>
+  <div class="conn" id="conn">
+    <span class="dot"></span><span id="connText"></span>
+  </div>
+  <button class="icon-btn" id="settingsBtn" data-i18n-title="settings">
+    <svg viewBox="0 0 20 20" width="16" height="16"><path fill="currentColor" d="M11.3 1.5l.4 2.2c.5.2 1 .5 1.4.8l2.1-.8 1.3 2.3-1.7 1.4a6 6 0 010 1.6l1.7 1.4-1.3 2.3-2.1-.8c-.4.3-.9.6-1.4.8l-.4 2.2H8.7l-.4-2.2c-.5-.2-1-.5-1.4-.8l-2.1.8-1.3-2.3 1.7-1.4a6 6 0 010-1.6L3.5 6l1.3-2.3 2.1.8c.4-.3.9-.6 1.4-.8l.4-2.2h2.6zM10 7a3 3 0 100 6 3 3 0 000-6z"/></svg>
+  </button>
+</header>
+
+<section class="settings" id="settings" hidden>
+  <div class="field">
+    <span class="label" data-i18n="defaultLocation"></span>
+    <div class="seg" role="radiogroup">
+      <button id="locDl" role="radio" data-i18n="browserDownloads"></button>
+      <button id="locFs" role="radio" data-i18n="customFolder"></button>
+    </div>
+    <div class="sub" id="locDlBox">
+      <span class="label" data-i18n="subfolder"></span>
+      <input id="setRoot" type="text" placeholder="Blackboard">
+    </div>
+    <div class="sub folder-pick" id="locFsBox" hidden>
+      <span class="folder-name" id="defaultFolderName"></span>
+      <button class="btn small" id="pickDefault" data-i18n="choose"></button>
+    </div>
+  </div>
+  <label class="check"><input id="setCourseDir" type="checkbox"> <span data-i18n="courseDir"></span></label>
+  <label class="check"><input id="setKeepTree" type="checkbox"> <span data-i18n="keepTree"></span></label>
+  <label class="check"><input id="setSkip" type="checkbox"> <span data-i18n="skipExisting"></span></label>
+  <div class="two">
+    <label class="field"><span class="label" data-i18n="delay"></span>
+      <input id="setDelay" type="number" min="100" max="3000" step="50">
+    </label>
+    <label class="field"><span class="label" data-i18n="language"></span>
+      <select id="setLang">
+        <option value="auto" data-i18n="langAuto"></option>
+        <option value="zh">简体中文</option>
+        <option value="zht">繁體中文</option>
+        <option value="en">English</option>
+      </select>
+    </label>
+  </div>
+  <p class="hint" data-i18n="settingsHint"></p>
+  <p class="hint" data-i18n="disclaimer"></p>
+</section>
+
+<main id="main">
+  <section class="empty" id="noTab" hidden>
+    <p class="big" data-i18n="noTabTitle"></p>
+    <p data-i18n="noTabBody"></p>
+    <button class="btn primary" id="openBB" data-i18n="openBB"></button>
+  </section>
+
+  <section id="app" hidden>
+    <div class="error-box" id="errorBox" hidden></div>
+
+    <div class="row course-row">
+      <select id="courseSel" data-i18n-title="course"></select>
+      <button class="icon-btn" id="reloadCourses" data-i18n-title="reloadCourses">
+        <svg viewBox="0 0 20 20" width="16" height="16"><path fill="currentColor" d="M10 3a7 7 0 016.6 4.7l1.4-.6-.8 4.2-3.6-2.3 1.2-.5A5 5 0 1015 13l1.8.9A7 7 0 1110 3z"/></svg>
+      </button>
+    </div>
+
+    <div class="loc" id="locRow">
+      <svg class="loc-ico" viewBox="0 0 20 20" width="15" height="15"><path fill="currentColor" d="M2 5.5A1.5 1.5 0 013.5 4h4l1.6 1.6h7.4A1.5 1.5 0 0118 7.1v7.4a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 012 14.5z"/></svg>
+      <div class="loc-text">
+        <span class="loc-label" data-i18n="saveTo"></span>
+        <span class="loc-path" id="locPath"></span>
+      </div>
+      <button class="link" id="locChange" data-i18n="change"></button>
+      <div class="menu" id="locMenu" hidden>
+        <button id="pickCourse" data-i18n="pickForCourse"></button>
+        <button id="clearCourse" data-i18n="useDefault"></button>
+        <button id="openDefault" data-i18n="editDefault"></button>
+      </div>
+    </div>
+    <div class="loc-warn" id="locWarn" hidden></div>
+
+    <div class="row scan-row">
+      <button class="btn primary grow" id="scanBtn"></button>
+      <span class="meta" id="scanMeta"></span>
+    </div>
+
+    <div class="progress" id="scanProgress" hidden>
+      <div class="bar indeterminate"></div>
+      <div class="ptext" id="scanText"></div>
+    </div>
+
+    <div id="results" hidden>
+      <div class="row">
+        <input id="search" type="search" data-i18n-placeholder="search">
+      </div>
+      <div class="chips" id="chips"></div>
+      <div class="row quick">
+        <button class="link" data-sel="all" data-i18n="selAll"></button>
+        <button class="link" data-sel="none" data-i18n="selNone"></button>
+        <button class="link" data-sel="new" data-i18n="selNew"></button>
+        <span class="spacer"></span>
+        <button class="link" id="expandAll" data-i18n="expand"></button>
+        <button class="link" id="collapseAll" data-i18n="collapse"></button>
+      </div>
+      <div class="tree" id="tree" role="tree"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="bottom" id="footer" hidden>
+  <div class="progress dl" id="dlProgress" hidden>
+    <div class="bar"><span id="dlBar"></span></div>
+    <div class="ptext" id="dlText"></div>
+  </div>
+  <div class="row">
+    <span class="count" id="selCount"></span>
+    <span class="spacer"></span>
+    <button class="btn primary" id="dlBtn" disabled></button>
+  </div>
+  <details class="log">
+    <summary data-i18n="log"></summary>
+    <pre id="log"></pre>
+  </details>
+</footer>
+
+<script type="module" src="panel.js"></script>
+</body>
+</html>
