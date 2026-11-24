@@ -1,0 +1,15 @@
+# Build output
+*.zip
+dist/
+
+# Store submission material and old scripts are kept out of this repo
+store-submission/
+bb_grab.py
+bb_embedded.py
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
